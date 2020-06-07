@@ -14,7 +14,7 @@ import Conway
 import Grid
 
 renderString :: (a -> Char) -> (Int, Int) -> Grid a -> String
-renderString toChar (width, height) = unlines . surround (take (2 * width) $ repeat '-') . S.take height . fmap (surround '|' . intersperse ' ' . S.take width . fmap (toChar . extract) . rights) . ups
+renderString toChar (width, height) = unlines . surround (take (2 * width) (' ' : repeat '-')) . S.take height . fmap (surround '|' . intersperse ' ' . S.take width . fmap (toChar . extract) . rights) . ups
     where
         surround :: a -> [a] -> [a]
         surround x xs = x : xs ++ [x]
@@ -29,16 +29,13 @@ main =
 
         loop g = do
             system "cls"
-            putStrLn $ renderString (bool ' ' '@') (20, 20) g
+            putStrLn $ renderString (bool ' ' '@') (40, 20) g
             b <- continue
             when b $ loop $ conway g
 
-        start = move (-10, -7) blinker
-           <||> conway (move (-3, -3) blinker)
-           <||> move (-5, -10) beacon
-           <||> move (-11, -11) glider
-           <||> move (-16, -14) blinker
-           <||> move (-2, -14) toad
+        start = move (3, -2) gosperGliderGun
+           <||> move (-5, -15) beacon
+           <||> move (-35, -3) blinker
     in
         loop start
 
